@@ -116,6 +116,19 @@
     </pluginManagement>
   </build>
 
+  <distributionManagement>
+    <repository>
+      <id>repository.dev.cognite.ai</id>
+      <name>Cognite maven releases</name>
+      <url>https://repository.dev.cognite.ai/repository/cognite/</url>
+    </repository>
+    <snapshotRepository>
+      <id>repository.dev.cognite.ai</id>
+      <name>Cognite maven snapshots</name>
+      <url>https://repository.dev.cognite.ai/repository/cognite-snapshot</url>
+    </snapshotRepository>
+  </distributionManagement>
+
   <profiles>
     <profile>
       <id>release-sign-artifacts</id>
