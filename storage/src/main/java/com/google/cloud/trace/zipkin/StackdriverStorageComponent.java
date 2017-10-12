@@ -28,6 +28,10 @@ import java.util.concurrent.atomic.LongAdder;
 import org.springframework.boot.actuate.endpoint.PublicMetrics;
 import org.springframework.boot.actuate.metrics.Metric;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
+import com.cognite.metrics.Counter;
+import com.cognite.metrics.Registry;
+import com.cognite.metrics.server.StandaloneJetty;
 import zipkin.storage.AsyncSpanConsumer;
 import zipkin.storage.AsyncSpanStore;
 import zipkin.storage.SpanStore;
@@ -45,17 +49,36 @@ public class StackdriverStorageComponent implements StorageComponent, PublicMetr
   private final AsyncSpanConsumer spanConsumer;
   private final ThreadPoolTaskExecutor executor;
   private final LongAdder tracesSent;
+  private final Registry registry;
+  private final Counter tracesSentCounter;
+  private final StandaloneJetty metricsServer;
+  private final static int COGNITE_METRICS_PORT = 9100;
 
   public StackdriverStorageComponent(String projectId, TraceConsumer consumer, ThreadPoolTaskExecutor executor) {
     this.traceTranslator = new TraceTranslator(projectId);
     this.tracesSent = new LongAdder();
+    String[] labelValues = new String[] { projectId };
+    this.registry = new Registry(true);
+    this.tracesSentCounter = new Counter(registry,
+        "stackdriver_zipkin", "traces_sent_total",
+        "Number of traces sent to Stackdriver Trace",
+        new String[] { "project_id" });
     final TraceConsumer instrumentedConsumer = traces ->
     {
       consumer.receive(traces);
+      this.tracesSentCounter.increment(
+          labelValues, traces != null ? traces.getTracesCount() : 0);
       this.tracesSent.add(traces != null ? traces.getTracesCount() : 0);
     };
     this.spanConsumer = blockingToAsync(new StackdriverSpanConsumer(traceTranslator, instrumentedConsumer), executor);
     this.executor = executor;
+
+    this.metricsServer = new StandaloneJetty(registry, COGNITE_METRICS_PORT);
+    try {
+      this.metricsServer.start();
+    } catch (Exception e) {
+      throw new RuntimeException("Failed to start metrics server on port " + COGNITE_METRICS_PORT);
+    }
   }
 
   @Override
@@ -80,7 +103,7 @@ public class StackdriverStorageComponent implements StorageComponent, PublicMetr
 
   @Override
   public void close() throws IOException {
-
+    metricsServer.close();
   }
 
   @Override
@@ -98,8 +121,7 @@ public class StackdriverStorageComponent implements StorageComponent, PublicMetr
     return result;
   }
 
-  public void resetMetrics()
-  {
+  public void resetMetrics() {
     tracesSent.reset();
   }
 }

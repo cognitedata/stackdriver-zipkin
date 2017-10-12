@@ -25,7 +25,8 @@ podTemplate(
                 gitCommit = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
             }
             stage("Build Docker container") {
-                sh('#!/bin/sh -e\n' + "docker build --build-arg MAVEN_PASSWORD=\"\$(cat /maven-credentials/maven-cogniteread-password.txt)\" -t eu.gcr.io/cognitedata/stackdriver-zipkin:${gitCommit} .")
+                sh('#!/bin/sh -e\n'
+                   + "docker build --build-arg MAVEN_PASSWORD=\"\$(cat /maven-credentials/maven-cogniteread-password.txt)\" -t eu.gcr.io/cognitedata/stackdriver-zipkin:${gitCommit} .")
             }
             if (env.BRANCH_NAME == 'master') {
                 stage("Push Docker container") {
