@@ -1,6 +1,7 @@
-@Library('jenkins-helpers') _
+@Library('jenkins-helpers@v0.1.2') _
 
-mvnLibraryPipeline()
+mvnLibraryPipeline {
+}
 
 podTemplate(
     label: 'jnlp-docker',
