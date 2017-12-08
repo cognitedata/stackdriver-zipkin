@@ -1,4 +1,4 @@
-@Library('jenkins-helpers@v0.1.2') _
+@Library('jenkins-helpers@v0.1.8') _
 
 mvnLibraryPipeline {
 }

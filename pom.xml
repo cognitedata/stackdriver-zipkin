@@ -9,7 +9,7 @@
     Adapters for using Zipkin instrumentation with Stackdriver Trace.
   </description>
   <url>http://cloud.google.com/trace</url>
-  <version>0.4.0-cognite-1</version>
+  <version>0.4.0-cognite-2</version>
   <packaging>pom</packaging>
 
   <licenses>

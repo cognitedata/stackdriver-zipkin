@@ -8,7 +8,7 @@ ARG MAVEN_REPOSITORY=repository.dev.cognite.ai/repository/cognite
 
 ARG MAVEN_GROUP_ID=com.google.cloud.trace.adapters.zipkin
 ARG MAVEN_ARTIFACT_ID=collector
-ARG MAVEN_ARTIFACT_VERSION=0.4.0-cognite-1
+ARG MAVEN_ARTIFACT_VERSION=0.4.0-cognite-2
 
 ENV JAR_FILE $MAVEN_ARTIFACT_ID-$MAVEN_ARTIFACT_VERSION.jar
 
