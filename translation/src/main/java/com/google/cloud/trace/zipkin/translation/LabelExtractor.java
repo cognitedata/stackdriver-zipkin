@@ -43,6 +43,9 @@ public class LabelExtractor {
   private static final String kAgentLabelKey = "/agent";
   private static final String kComponentLabelKey = "/component";
 
+  // The maximum tag value size in Stackdriver is 16 KiB. This value should be safe.
+  private static final int LABEL_LENGTH_MAX = 8192;
+
   public LabelExtractor(Map<String, String> renamedLabels) {
     this(ImmutableMap.copyOf(renamedLabels), "zipkin.io/");
   }
@@ -68,7 +71,11 @@ public class LabelExtractor {
   Map<String, String> extract(Span2 zipkinSpan) { // not exposed until Span2 is a formal type
     Map<String, String> result = new LinkedHashMap<>();
     for (Map.Entry<String, String> tag : zipkinSpan.tags().entrySet()) {
-      result.put(getLabelName(tag.getKey()), tag.getValue());
+      String value = tag.getValue();
+      if (value.length() > LABEL_LENGTH_MAX) {
+        value = value.substring(0, LABEL_LENGTH_MAX - 5) + "[...]";
+      }
+      result.put(getLabelName(tag.getKey()), value);
     }
 
     for (Annotation annotation : zipkinSpan.annotations()) {
