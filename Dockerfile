@@ -2,7 +2,7 @@ FROM maven:3.5.0-jdk-8
 
 WORKDIR /code
 
-ARG MAVEN_USER=cogniteread
+ARG MAVEN_USER=cognitedeploy
 ARG MAVEN_PASSWORD
 ARG MAVEN_REPOSITORY=repository.dev.cognite.ai/repository/cognite
 
@@ -25,7 +25,7 @@ ENV JAR_FILE $MAVEN_ARTIFACT_ID-$MAVEN_ARTIFACT_VERSION.jar
 #    "" => "" (empty string)
 RUN export SNAPSHOT_SUFFIX=$(echo "${MAVEN_ARTIFACT_VERSION##`echo $MAVEN_ARTIFACT_VERSION | sed 's/-SNAPSHOT$//'`}" | \
       tr '[:upper:]' '[:lower:]') && \
-  mvn --quiet dependency:get -DremoteRepositories="https://$MAVEN_USER:$MAVEN_PASSWORD@$MAVEN_REPOSITORY$SNAPSHOT_SUFFIX" \
+  mvn --quiet dependency:get -DremoteRepositories="'https://$MAVEN_USER:$MAVEN_PASSWORD@$MAVEN_REPOSITORY$SNAPSHOT_SUFFIX'" \
     -Dartifact=$MAVEN_GROUP_ID:$MAVEN_ARTIFACT_ID:$MAVEN_ARTIFACT_VERSION \
     -Dtransitive=false && \
   cp ~/.m2/repository/$(echo $MAVEN_GROUP_ID | sed 's|\.|/|g')/$MAVEN_ARTIFACT_ID/$MAVEN_ARTIFACT_VERSION/$JAR_FILE /code

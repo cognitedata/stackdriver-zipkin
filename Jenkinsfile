@@ -1,6 +1,8 @@
 @Library('jenkins-helpers@v0.1.8') _
 
 mvnLibraryPipeline {
+    resourceRequestMemory = '2500Mi'
+    resourceLimitMemory = '2500Mi'
 }
 
 podTemplate(
@@ -27,7 +29,7 @@ podTemplate(
             }
             stage("Build Docker container") {
                 sh('#!/bin/sh -e\n'
-                   + "docker build --build-arg MAVEN_PASSWORD=\"\$(cat /maven-credentials/maven-cogniteread-password.txt)\" -t eu.gcr.io/cognitedata/stackdriver-zipkin:${gitCommit} .")
+                   + "docker build --build-arg MAVEN_PASSWORD=\"\$(cat /maven-credentials/maven-cognitedeploy-password.txt)\" -t eu.gcr.io/cognitedata/stackdriver-zipkin:${gitCommit} .")
             }
             if (env.BRANCH_NAME == 'master') {
                 stage("Push Docker container") {
