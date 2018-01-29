@@ -1,6 +1,8 @@
 @Library('jenkins-helpers@v0.1.8') _
 
 mvnLibraryPipeline {
+    resourceRequestMemory = '2500Mi'
+    resourceLimitMemory = '2500Mi'
 }
 
 podTemplate(
