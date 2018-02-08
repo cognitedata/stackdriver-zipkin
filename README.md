@@ -1,4 +1,4 @@
-# Stackdriver Trace Zipkin Collector
+# Stackdriver Trace Zipkin Collectors test
 
 [![Build Status](https://travis-ci.org/GoogleCloudPlatform/stackdriver-zipkin.svg?branch=master)](https://travis-ci.org/GoogleCloudPlatform/stackdriver-zipkin) 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.google.cloud.trace.adapters.zipkin/collector/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.google.cloud.trace.adapters.zipkin/collector)
