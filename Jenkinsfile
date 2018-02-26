@@ -5,9 +5,9 @@ podTemplate(
     containers: [containerTemplate(name: 'docker',
                                    command: '/bin/cat -',
                                    image: 'docker:17.06.2-ce',
-                                   resourceRequestCpu: '15000m',
+                                   resourceRequestCpu: '1500m',
                                    resourceRequestMemory: '1500Mi',
-                                   resourceLimitCpu: '15000m',
+                                   resourceLimitCpu: '1500m',
                                    resourceLimitMemory: '1500Mi',
                                    ttyEnabled: true),
                  containerTemplate(name: 'maven',
@@ -30,6 +30,7 @@ podTemplate(
             stage('Checkout') {
                 checkout(scm)
                 gitCommit = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+                sh(script: 'echo "HOLA"')
             }
         }
         container('maven') {
