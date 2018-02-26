@@ -30,6 +30,7 @@ podTemplate(
             stage('Checkout') {
                 checkout(scm)
                 gitCommit = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+                sh(script: 'echo "HOLA 2"')
             }
         }
         container('maven') {
