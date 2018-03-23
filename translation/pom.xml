@@ -3,13 +3,13 @@
   <parent>
     <artifactId>parent</artifactId>
     <groupId>com.google.cloud.trace.adapters.zipkin</groupId>
-    <version>0.4.0-cognite-3</version>
+    <version>0.4.0-cognite-4-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>translation</artifactId>
   <name>Zipkin to Stackdriver Trace Translation</name>
-  <version>0.4.0-cognite-3</version>
+  <version>0.4.0-cognite-4-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <dependencies>
@@ -37,6 +37,25 @@
   </dependencies>
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.1</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>report</id>
+            <phase>test</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
       <!-- Repackage internal zipkin classes until Span2 is a public type -->
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
