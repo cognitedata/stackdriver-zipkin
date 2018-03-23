@@ -45,7 +45,7 @@ podTemplate(
             }
             stage("Upload Jacoco reports") {
                 sh 'bash </codecov-script/upload-report.sh'
-                jacoco(execPattern: 'target/jacoco.exec')
+                jacoco(execPattern: '**/jacoco.exec')
             }
             stage('Build') {
                 sh("mvn package")
@@ -56,7 +56,7 @@ podTemplate(
             echo "Not in master branch. Skip."
             return
         }
-        
+
         container('docker') {
             stage('Build Docker container') {
                 sh("docker build -t eu.gcr.io/cognitedata/stackdriver-zipkin:${gitCommit} .")
