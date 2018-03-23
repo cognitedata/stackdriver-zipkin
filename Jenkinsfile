@@ -23,7 +23,11 @@ podTemplate(
                            readOnly: true),
               secretVolume(secretName: 'maven-credentials',
                            mountPath: '/maven-credentials'),
-              hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')]) {
+              configMapVolume(configMapName: 'codecov-script-configmap', mountPath: '/codecov-script'),
+              hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')],
+    envVars: [
+            secretEnvVar(key: 'CODECOV_TOKEN', secretName: 'codecov-token-stackdriver-zipkin', secretKey: 'token.txt')
+    ]) {
     node('jnlp-stackdriver-zipkin') {
         def gitCommit
         container('jnlp') {
@@ -38,6 +42,10 @@ podTemplate(
             }
             stage('Test') {
                 sh("mvn test")
+            }
+            stage("Upload Jacoco reports") {
+                sh 'bash </codecov-script/upload-report.sh'
+                jacoco(execPattern: 'target/jacoco.exec')
             }
             stage('Build') {
                 sh("mvn package")
