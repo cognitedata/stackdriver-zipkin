@@ -51,6 +51,12 @@ podTemplate(
                 sh("mvn package")
             }
         }
+
+        if (env.BRANCH_NAME != "master") {
+            echo "Not in master branch. Skip."
+            return
+        }
+        
         container('docker') {
             stage('Build Docker container') {
                 sh("docker build -t eu.gcr.io/cognitedata/stackdriver-zipkin:${gitCommit} .")
