@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/GoogleCloudPlatform/stackdriver-zipkin.svg?branch=master)](https://travis-ci.org/GoogleCloudPlatform/stackdriver-zipkin) 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.google.cloud.trace.adapters.zipkin/collector/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.google.cloud.trace.adapters.zipkin/collector)
+[![codecov](https://codecov.io/gh/cognitedata/stackdriver-zipkin/branch/master/graph/badge.svg)](https://codecov.io/gh/cognitedata/stackdriver-zipkin)
 
 This project provides adapters so that Zipkin tracing libraries can be used with
 Google's free [Stackdriver Trace](https://cloud.google.com/trace/) distributed tracing service. A how-to guide and documentation are available [here](https://cloud.google.com/trace/docs/zipkin). If you are not already using Zipkin, you may be interested in the [offical Stackdriver Trace SDKs](https://cloud.google.com/trace/api/) instead.
